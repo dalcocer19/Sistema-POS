@@ -8,6 +8,7 @@ export type Team = {
     role?: TeamRole;
     roleLabel?: string;
     isCurrent?: boolean;
+    logoUrl?: string | null;
 };
 
 export type TeamMember = {
@@ -49,6 +50,10 @@ export type TeamPermissions = {
     canRemoveMember: boolean;
     canCreateInvitation: boolean;
     canCancelInvitation: boolean;
+    canManageProducts: boolean;
+    canManageInventory: boolean;
+    canSell: boolean;
+    canViewSales: boolean;
 };
 
 export type RoleOption = {

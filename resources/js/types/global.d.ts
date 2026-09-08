@@ -15,6 +15,7 @@ declare module '@inertiajs/core' {
             sidebarOpen: boolean;
             currentTeam: Team | null;
             teams: Team[];
+            permissions: import('@/types/teams').TeamPermissions | null;
             [key: string]: unknown;
         };
     }

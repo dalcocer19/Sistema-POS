@@ -12,6 +12,10 @@ readonly class TeamPermissions
         public bool $canRemoveMember,
         public bool $canCreateInvitation,
         public bool $canCancelInvitation,
+        public bool $canManageProducts,
+        public bool $canManageInventory,
+        public bool $canSell,
+        public bool $canViewSales,
     ) {
         //
     }

@@ -157,6 +157,7 @@ trait HasTeams
             role: $role?->value,
             roleLabel: $role?->label(),
             isCurrent: $this->isCurrentTeam($team),
+            logoUrl: $team->logo_url,
         );
     }
 
@@ -175,6 +176,10 @@ trait HasTeams
             canRemoveMember: $role?->hasPermission(TeamPermission::RemoveMember) ?? false,
             canCreateInvitation: $role?->hasPermission(TeamPermission::CreateInvitation) ?? false,
             canCancelInvitation: $role?->hasPermission(TeamPermission::CancelInvitation) ?? false,
+            canManageProducts: $role?->hasPermission(TeamPermission::ManageProducts) ?? false,
+            canManageInventory: $role?->hasPermission(TeamPermission::ManageInventory) ?? false,
+            canSell: $role?->hasPermission(TeamPermission::Sell) ?? false,
+            canViewSales: $role?->hasPermission(TeamPermission::ViewSales) ?? false,
         );
     }
 

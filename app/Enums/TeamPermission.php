@@ -13,4 +13,9 @@ enum TeamPermission: string
 
     case CreateInvitation = 'invitation:create';
     case CancelInvitation = 'invitation:cancel';
+
+    case ManageProducts = 'product:manage';
+    case ManageInventory = 'inventory:manage';
+    case Sell = 'sale:create';
+    case ViewSales = 'sale:view';
 }

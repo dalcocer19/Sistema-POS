@@ -6,6 +6,7 @@ use App\Concerns\GeneratesUniqueTeamSlugs;
 use App\Enums\TeamRole;
 use Database\Factories\TeamFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,12 +14,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @property int $id
  * @property string $name
  * @property string $slug
  * @property bool $is_personal
+ * @property string|null $logo_path
+ * @property-read string|null $logo_url
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
@@ -26,7 +30,7 @@ use Illuminate\Support\Carbon;
  * @property-read Collection<int, Membership> $memberships
  * @property-read Collection<int, User> $members
  */
-#[Fillable(['name', 'slug', 'is_personal'])]
+#[Fillable(['name', 'slug', 'is_personal', 'logo_path'])]
 class Team extends Model
 {
     /** @use HasFactory<TeamFactory> */
@@ -95,6 +99,24 @@ class Team extends Model
         return $this->hasMany(TeamInvitation::class);
     }
 
+    /** @return HasMany<Category, $this> */
+    public function categories(): HasMany
+    {
+        return $this->hasMany(Category::class);
+    }
+
+    /** @return HasMany<Product, $this> */
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    /** @return HasMany<Sale, $this> */
+    public function sales(): HasMany
+    {
+        return $this->hasMany(Sale::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -105,6 +127,16 @@ class Team extends Model
         return [
             'is_personal' => 'boolean',
         ];
+    }
+
+    /**
+     * Get the team logo's public URL.
+     */
+    protected function logoUrl(): Attribute
+    {
+        return Attribute::get(fn (): ?string => $this->logo_path
+            ? Storage::disk('public')->url($this->logo_path)
+            : null);
     }
 
     /**
