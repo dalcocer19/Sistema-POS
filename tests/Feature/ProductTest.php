@@ -49,7 +49,7 @@ test('products can be created with an expiration date', function () {
         'team_id' => $team->id,
         'name' => 'Yogurt Natural',
         'sku' => 'YOG-001',
-        'expiration_date' => now()->addDays(5)->toDateString(),
+        'expiration_date' => now()->addDays(5)->startOfDay(),
     ]);
 });
 

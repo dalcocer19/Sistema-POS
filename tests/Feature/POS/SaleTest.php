@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Product;
+use App\Models\Sale;
 use App\Models\Team;
 use App\Models\User;
 
@@ -23,10 +24,10 @@ test('a sale decrements stock and keeps the historical price', function () {
         'items' => [['product_id' => $product->id, 'quantity' => 2]],
     ]);
 
-    $sale = \App\Models\Sale::query()->firstOrFail();
+    $sale = Sale::query()->firstOrFail();
 
     $response->assertRedirect(route('sales.show', [$team, $sale]));
-    expect($product->fresh()->stock)->toBe('3.000');
+    expect($product->fresh()->stock)->toBe(3);
     $this->assertDatabaseHas('sale_items', [
         'sale_id' => $sale->id,
         'product_name' => 'Arroz',
@@ -59,7 +60,7 @@ test('a sale is rejected when stock is insufficient', function () {
     ]);
 
     $response->assertSessionHasErrors('items');
-    expect($product->fresh()->stock)->toBe('1.000');
+    expect($product->fresh()->stock)->toBe(1);
     $this->assertDatabaseCount('sales', 0);
 });
 
@@ -82,6 +83,6 @@ test('a team cannot sell another teams product', function () {
     ]);
 
     $response->assertSessionHasErrors('items');
-    expect($product->fresh()->stock)->toBe('4.000');
+    expect($product->fresh()->stock)->toBe(4);
     $this->assertDatabaseCount('sales', 0);
 });
